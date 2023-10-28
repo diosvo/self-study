@@ -190,7 +190,7 @@ or
 
 ---
 
->>> strings = [ 'a','A','abc','ABC', 'AAA', 'aBC', 'HELLO']
+>>> strings = ['a','A','abc','ABC', 'AAA', 'aBC', 'HELLO']
 
 [30] - Case insensitive sort
 >>> strings.sort(key=str.lower)
@@ -213,3 +213,22 @@ stuff = [True, False, 0, -1, "0", "10", age < 30, "2", "9011", "5.5", "6.0", 6]
 stuff.sort(key=float)
 
 print(stuff)
+
+"""
+SPLITTING
+
+>>> message = 'Pay attention to everything I say'
+
+[35] - How to convert String to List using `split`
+>>> message.split()
+
+[36] - Split String by New Line
+"""
+print('------------------ Lesson 35 -> 36 ------------------')
+
+message = """\
+Pay attention \
+to everything
+I say"""
+
+print(message.split('\n'))
