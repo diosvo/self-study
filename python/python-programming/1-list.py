@@ -167,4 +167,49 @@ data = [0, 1, 2, 3, 4, 5, 6]
 
 data[:] = data[::-1]
 data.reverse()
+
 print(data)
+
+"""
+SORTING
+
+[27] - Sort List with `sort` method
+>>> workdays.sort()
+
+[28] - Sort with the `sorted` method
+>>> sorted(workdays)
+
+It creates new data set, so `sort` method is preferred
+
+[29] - Sort data in reverse order
+
+>>> data.sort()
+... data.reverse()
+or
+>>> sorted(data, reverse=True)
+
+---
+
+>>> strings = [ 'a','A','abc','ABC', 'AAA', 'aBC', 'HELLO']
+
+[30] - Case insensitive sort
+>>> strings.sort(key=str.lower)
+
+[31] - Sort by string length
+>>> strings.sort(key=len)
+or
+>>> sorted(strings, key=len)
+
+[32] - Lexicographic number sort (sort number as strings)
+>>> numbers.sort(key=str)
+
+[33] - Compare and sort various types
+"""
+print('------------------ Lesson 27 -> 34 ------------------')
+
+age = 5
+stuff = [True, False, 0, -1, "0", "10", age < 30, "2", "9011", "5.5", "6.0", 6]
+
+stuff.sort(key=float)
+
+print(stuff)
