@@ -32,10 +32,10 @@ print('------------------ Lesson 52 -> 54 ------------------')
 from os.path import dirname
 import sys
 
-# Development modules
-import utils
-
 # Expand system path
 sys.path.append(dirname(__file__) + "/modules/")
+
+# Development modules
+import utils
 
 print(utils.sort_range([5, 9, 26]))
