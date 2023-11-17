@@ -232,3 +232,41 @@ to everything
 I say"""
 
 print(message.split('\n'))
+
+"""
+Example with Sorting
+"""
+
+print('------------------ Example ------------------')
+
+data = [
+    {'Name': 'Druidbroker', 'Index': 'X', 'PrivateIP': '172.19.9.25'},
+    {'Name': 'Zookeeper', 'Index': '3', 'PrivateIP': '172.19.8.150'},
+    {'Name': 'Druidbroker', 'Index': 'X', 'PrivateIP': '172.19.3.27'},
+    {'Name': 'Kafkaconnect', 'Index': 'X', 'PrivateIP': '172.19.3.130'},
+    {'Name': 'Fluentd', 'Index': 'X', 'PrivateIP': '172.19.2.85'},
+    {'Name': 'Zookeeper', 'Index': '1', 'PrivateIP': '172.19.2.87'},
+    {'Name': 'Kafka', 'Index': '3', 'PrivateIP': '172.19.3.68'},
+    {'Name': 'Druidcoordinator', 'Index': '1', 'PrivateIP': '172.19.3.241'},
+    {'Name': 'Druidhistorical', 'Index': 'X', 'PrivateIP': '172.19.0.249'},
+    {'Name': 'Kafka', 'Index': '1', 'PrivateIP': '172.19.2.198'},
+    {'Name': 'Kafka', 'Index': '2', 'PrivateIP': '172.19.4.244'},
+    {'Name': 'Druidhistorical', 'Index': 'X', 'PrivateIP': '172.19.9.26'},
+    {'Name': 'Fluentd', 'Index': 'X', 'PrivateIP': '172.19.5.253'},
+    {'Name': 'Druidmiddlemanager', 'Index': 'X', 'PrivateIP': '172.19.6.55'},
+    {'Name': 'Zookeeper', 'Index': '2', 'PrivateIP': '172.19.6.206'},
+    {'Name': 'Druidrouter', 'Index': 'X', 'PrivateIP': '127.0.0.1'}
+]
+
+data.sort(key=lambda item: (
+    item['Name'],
+    int(item['Index']) if item['Index'].isdigit() else item['Index'],
+    item['PrivateIP']
+))
+
+result = [
+    (item['Name'].lower() + item['Index'], item['PrivateIP'])
+    for item in data
+]
+
+[print(f'{cluster} - {ip}',) for cluster, ip in result]
