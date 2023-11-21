@@ -20,6 +20,10 @@ Why? - The foundation for a lot of different things.
 70 - __hash__ and Collections
 __hash__ = None is the default when we override __eq__ (Book is not hashable)
 > Purpose: Quickly compare dictionary keys during a dictionary lookup.
+>>> book = Book('Are You My Mother?', 72)
+... book2 = Book('Are You My Mother?', 72)
+
+... print(hash(book) == hash(book2))
 
 71 - Passing by Object Reference
 """
@@ -45,11 +49,9 @@ class Book():
     def __hash__(self) -> int:
         return hash(self.title) ^ hash(self.pages)
 
+    def __repr__(self) -> str:  # added to make list of items invoke str
+        return self.__str__()
 
-book = Book('Are You My Mother?', 72)
-book2 = Book('Are You My Mother?', 72)
-
-print(hash(book) == hash(book2))
 
 """
 FILE PROCESSING
@@ -61,7 +63,7 @@ FILE PROCESSING
 print('------------------ Lesson 72 -> 74 ------------------')
 
 try:
-    file = open('input.txt', 'r')
+    file = open('/tmp/input.txt', 'r')
 
 except FileNotFoundError as e:
     print(e)
@@ -74,7 +76,7 @@ except Exception as e:
 
 else:
     with file:
-        print(file.readline())
+        print(file.readline() or 'Empty file.')
 
 finally:
     file.close()

@@ -45,3 +45,29 @@ cu.execute('SELECT rowid, title FROM books')
 data = cu.fetchall()
 
 print('Fetch all data after deletion:', data)
+
+"""
+SDK
+
+82 - Create SDK - Part 1
+82 - Create SDK - Part 2
+"""
+print('------------------ Lesson 82 -> 83 ------------------')
+
+# Python modules
+import importlib
+from os.path import dirname
+import sys
+
+# Expand system path
+sys.path.append(dirname(__file__) + '/modules/')
+
+# Development modules
+import sdk
+oop = importlib.import_module('7-oop')
+
+book = oop.Book('Hitler', 1000)
+
+# sdk.add_book(book)
+# sdk.get_books()
+print(sdk.get_book_by_title('Hitler'))
