@@ -4,7 +4,10 @@ SDK
 82 - Create an SDK - Part 1
 83 - Create an SDK - Part 2
 """
+import importlib
 import sqlite3
+
+oop = importlib.import_module('7-oop')
 
 
 def cursor() -> sqlite3.Cursor:
@@ -27,11 +30,14 @@ def add_book(book: dict) -> int | None:
 
 def get_books():
     cu = cursor()
+    books = []
 
-    with cu.connection:
-        cu.execute('SELECT * FROM books')
+    for row in cu.execute('SELECT * FROM books'):
+        books.append(oop.Book(row[0], row[1]))
 
-    return cu.fetchall()
+    cu.connection.close()
+
+    return books
 
 
 def get_book_by_title(title: str) -> dict:
