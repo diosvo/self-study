@@ -95,4 +95,7 @@ pip3 show <package_name>
 
 📹
 
-- [Python Programming](https://www.youtube.com/playlist?list=PL_c9BZzLwBRLrHc6MntpdrNPKoC2tJr0z) > 🗂️ python/python-programming
+Located at 🗂️ python/
+
+- [Python Programming](https://www.youtube.com/playlist?list=PL_c9BZzLwBRLrHc6MntpdrNPKoC2tJr0z)
+- [anthony explains](https://www.youtube.com/playlist?list=PLWBKAf81pmOaP9naRiNAqug6EBnkPakvY)
