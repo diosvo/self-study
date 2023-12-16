@@ -1,0 +1,2 @@
+2023-12-16T17:24:49.562071+00:00 ubuntu-v23 systemd-logind[197]: New seat seat0.
+2023-12-16T17:24:52.543926+00:00 ubuntu-v23 userdel[322]: delete user 'ubuntu'

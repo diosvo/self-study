@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# An example with the number
+for n in {1..10}; do
+	echo "$n"
+done
+
+echo "This is outside of the for loop."
+
+# An example that's actually useful
+
+for file in ../log/*.log; do
+	tar -czvf "$file.tar.gz" "$file"
+done
