@@ -36,7 +36,7 @@
 
 1. Variable definitions
 
-2. Use Log Parsing Commands
+2. Use [Log Parsing Commands](misc/cheat-sheet.md)
 
 - **GREP** searches any given input files, selecting lines that match one or more patterns.
 - **CUT** cuts out selected portions of each line from each file and writes them to the standard output.

@@ -11,7 +11,7 @@ A cheat sheet of the commands I use most for Linux
 
 ### Directory Operations
 
-| Operation | Options | Syntax             | Description             |
+| Operation | Options | Example            | Description             |
 | :-------- | :------ | :----------------- | :---------------------- |
 | `pwd`     |         | `mkdir <dir_name>` | Make a directory        |
 | `mkdir`   |         |                    | Print working directory |
@@ -20,10 +20,59 @@ A cheat sheet of the commands I use most for Linux
 
 ### File Operations
 
-| Operation | Syntax                  | Description                  |
+| Operation | Example                 | Description                  |
 | :-------- | :---------------------- | :--------------------------- |
 | `touch`   | `touch <file>`          | Create file                  |
 | `cat`     | `cat <file_1> <file_2>` | Concatenate files and output |
+
+### Log Parsing
+
+🔍 **GREP** - Allow to search patterns in files. **ZGREP** for GZIP file.
+
+```bash
+grep <pattern> file.log
+```
+
+_Optional arguments:_
+
+| Argument | Description                             |
+| :------- | :-------------------------------------- |
+| `-c`     | Count number of matches                 |
+| `-E`     | Extended regex                          |
+| `-i`     | Case insensitive                        |
+| `-l`     | Find filenames that matches the pattern |
+| `-n`     | Number of lines that matches            |
+| `-v`     | Invert matches                          |
+
+🛜 **NGREP** - Analyze network packets.
+
+```bash
+ngrep -I file.pcap
+```
+
+_Optional arguments:_
+
+| Argument | Description                |
+| :------- | :------------------------- |
+| `-d`     | Specify network interface  |
+| `-i`     | Case insensitive           |
+| `-I`     | Recap pcap file            |
+| `-t`     | Print timestamp            |
+| `-X`     | Print in alternate hexdump |
+
+:scissors: **CUT** - Parse fields from delimited logs.
+
+_Optional arguments:_
+
+| Argument | Description                   |
+| :------- | :---------------------------- |
+| `-c`     | Specifies characters position |
+| `-d`     | Use the field delimiter       |
+| `-f`     | The field number              |
+
+```bash
+cut -d "." -f 2 file.log
+```
 
 ### Other ones
 
