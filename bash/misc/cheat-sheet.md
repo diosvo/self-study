@@ -25,12 +25,12 @@ A cheat sheet of the commands I use most for Linux
 | `touch`   | `touch <file>`          | Create file                  |
 | `cat`     | `cat <file_1> <file_2>` | Concatenate files and output |
 
-### Log Parsing
+### Log Parsing Commands
 
 🔍 **GREP** - Allow to search patterns in files. **ZGREP** for GZIP file.
 
 ```bash
-grep <pattern> file.log
+grep <pattern> <file.log>
 ```
 
 _Optional arguments:_
@@ -44,10 +44,41 @@ _Optional arguments:_
 | `-n`     | Number of lines that matches            |
 | `-v`     | Invert matches                          |
 
+:scissors: **CUT** - Parse fields from delimited logs.
+
+```bash
+cut -d "." -f 2 <file.log>
+```
+
+_Optional arguments:_
+
+| Argument | Description                   |
+| :------- | :---------------------------- |
+| `-c`     | Specifies characters position |
+| `-d`     | Use the field delimiter       |
+| `-f`     | The field number              |
+
+🌊 **SED** (Stream Editor) - Replace strings in a file
+
+```bash
+sed s/regex/replace/g <filename>
+```
+
+_Optional arguments:_
+
+| Argument | Description     |
+| :------- | :-------------- |
+| `d`      | Delete          |
+| `g`      | Replace         |
+| `s`      | Search          |
+| `W`      | Append to file  |
+| `-e`     | Execute command |
+| `-n`     | Suppress output |
+
 🛜 **NGREP** - Analyze network packets.
 
 ```bash
-ngrep -I file.pcap
+ngrep -I <file.pcap>
 ```
 
 _Optional arguments:_
@@ -59,20 +90,6 @@ _Optional arguments:_
 | `-I`     | Recap pcap file            |
 | `-t`     | Print timestamp            |
 | `-X`     | Print in alternate hexdump |
-
-:scissors: **CUT** - Parse fields from delimited logs.
-
-_Optional arguments:_
-
-| Argument | Description                   |
-| :------- | :---------------------------- |
-| `-c`     | Specifies characters position |
-| `-d`     | Use the field delimiter       |
-| `-f`     | The field number              |
-
-```bash
-cut -d "." -f 2 file.log
-```
 
 ### Other ones
 
