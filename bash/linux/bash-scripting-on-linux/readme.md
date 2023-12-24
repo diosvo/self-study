@@ -1,23 +1,23 @@
 ## 📄 Outline <sup>[Bash Scripting on Linux](https://www.youtube.com/playlist?list=PLT98CRl2KxKGj-VKtApD8-zCqSaN2mD4w)</sup>
 
-- Class 01: Introduction & Welcome
-- [Class 02](2-hello-world): Hello World
-- [Class 03](3-variables): Variables
-- [Class 04](4-math-functions): Math Functions
-- [Class 05](5-if-statements): If Statements
-- [Class 06](6-exist-codes): Exit Codes
-- [Class 07](7-while-loops): While Loops
-- [Class 08](8-universal-update-script): Universal Update Script
-- [Class 09](9-loops): For Loops
-- Class 10: Filesystem Locations for Scripts (_pending_)
-- Class 11: Data Streams
-- Class 12: Function
-- Class 13: Case Statements
-- Class 14: Scheduling Jobs (Part 1)
-- Class 15: Scheduling Jobs (Part 2)
-- Class 16: Arguments
-- Class 17: Creating a Backup Script
-- Class 18: Closing
+- Class 01 ➜ Introduction & Welcome
+- [Class 02](2-hello-world) ➜ Hello World
+- [Class 03](3-variables) ➜ Variables
+- [Class 04](4-math-functions) ➜ Math Functions
+- [Class 05](5-if-statements) ➜ If Statements
+- [Class 06](6-exist-codes) ➜ Exit Codes
+- [Class 07](7-while-loops) ➜ While Loops
+- [Class 08](8-universal-update-script) ➜ Universal Update Script
+- [Class 09](9-loops) ➜ For Loops
+- Class 10 ➜ Filesystem Locations for Scripts (_pending_)
+- Class 11 ➜ Data Streams
+- [Class 12](12-functions) ➜ Function
+- [Class 13](13-case-statements) ➜ Case Statements
+- Class 14 ➜ Scheduling Jobs (Part 1)
+- Class 15 ➜ Scheduling Jobs (Part 2)
+- Class 16 ➜ Arguments
+- Class 17 ➜ Creating a Backup Script
+- Class 18 ➜ Closing
 
 ## 💣 Details
 
