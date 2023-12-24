@@ -6,7 +6,7 @@
 
 - Lists
 
-  - Like dynamic sized arrays.
+  - Like dynamically sized arrays.
   - Need NOT be homogeneous.
 
 - Tuples
@@ -22,7 +22,7 @@
 
 - Dictionaries
 
-  - An ordered (since Py 3.7) [unordered (Py 3.6 & prior)] collection of data values, used to store data values like a map.
+  - An ordered (since Py 3.7) [unordered (Py 3.6 & prior)] collection of data values, is used to store data values like a map.
 
     > Data Types that hold only a single value as an element, <br/>
     > Dictionary holds key:value pair. Key-value is provided in the dictionary to make it more optimized.
@@ -67,7 +67,7 @@ Exception(*)
 
 ## Local Development
 
-Which python and pip are using
+Python and pip are using
 
 ```bash
 which python3

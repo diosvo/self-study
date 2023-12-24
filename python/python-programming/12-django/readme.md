@@ -2,7 +2,7 @@
 
 Intro to Django Web Development
 
-This mini project will be include:
+This mini-project will include:
 
 - 94 - Intro to Django Web Development
 - 95 - Creating a Django Hello World App
@@ -25,7 +25,7 @@ Download the virtual environment package:
 sudo pip install virtualenv
 ```
 
-Create virtual environment:
+Create a virtual environment:
 
 ```bash
 virtualenv env
@@ -45,7 +45,7 @@ Install `django` package in the virtual environment:
 python3 -m pip install django
 ```
 
-Start new project:
+Start a new project:
 
 ```bash
 django-admin startproject books
