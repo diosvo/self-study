@@ -1,7 +1,9 @@
 {
-  "cSpell.words": ["realpython"],
-  "[python]": {
-    "editor.defaultFormatter": "ms-python.autopep8"
-  },
-  "python.analysis.typeCheckingMode": "basic"
+  "cSpell.words": [
+    "HEALTHCHECK",
+    "ONBUILD",
+    "realpython",
+    "STOPSIGNAL",
+    "WORKDIR"
+  ]
 }
