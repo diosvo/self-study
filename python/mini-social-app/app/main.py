@@ -1,9 +1,15 @@
-from random import randrange
+# Python Libraries
+import logging
+import time
 from typing import Optional
 
+# Third-party Packages
+import psycopg2
 from fastapi import FastAPI, HTTPException, status
-
+from psycopg2.extras import RealDictCursor
 from pydantic import BaseModel
+
+logger = logging.getLogger('uvicorn')
 
 app = FastAPI()
 
@@ -15,48 +21,59 @@ class Post(BaseModel):
     rating: Optional[int] = None
 
 
-list_posts = [
-    {
-        "id": 1,
-        "title": "Random Post 1",
-        "content": "Content of post 1",
-    },
-    {
-        "id": 2,
-        "title": "Favorite foods",
-        "content": "I like pizza!",
-    }
-]
+while True:
+    retries = 0
+    max_retries = 3
 
+    try:
+        conn = psycopg2.connect(
+            host='localhost',
+            database='fastapi',
+            user='diosvo',
+            password='1234',
+            cursor_factory=RealDictCursor
+        )
+        cursor = conn.cursor()
+        logger.info("event=connected-to-postgres-successfully")
+        break
 
-def find_posts(id: int) -> Post:
-    for post in list_posts:
-        if post["id"] == id:
-            return post
+    except Exception as exc:
+        log_event = "event=could-not-connect-to-postgres-server "
 
-
-def find_index_post(id: int) -> int:
-    for index, post in enumerate(list_posts):
-        if post["id"] == id:
-            return index
+        if retries < max_retries:
+            retries += 1
+            wait_time = retries * 2  # Exponential backoff
+            logger.warning(
+                log_event +
+                f"retry_count={retries} "
+                f"message='connection retry in {wait_time}s..' "
+            )
+            time.sleep(wait_time)
+        else:
+            logger.error(
+                log_event +
+                "reason='Failed to connect after several attempts.' "
+                f"details='{str(exc)}'"
+            )
 
 
 @app.get("/posts")
-def get_posts():
-    return list_posts
+def get_posts() -> list[Post]:
+    cursor.execute("""SELECT * FROM posts""")
+    posts = cursor.fetchall()
 
-
-@app.post("/posts", status_code=status.HTTP_201_CREATED)
-def create_posts(post: Post):
-    post_dict = post.model_dump()
-    post_dict["id"] = randrange(0, 10000000)
-    list_posts.append(post_dict)
-    return post_dict
+    return posts
 
 
 @app.get("/posts/{id}")
-def get_post(id: int):
-    post = find_posts(id)
+def get_post(id: int) -> Post:
+    cursor.execute(
+        f"""
+        SELECT * FROM posts
+        WHERE id={id}
+        """,
+    )
+    post = cursor.fetchone()
 
     if not post:
         raise HTTPException(
@@ -67,33 +84,64 @@ def get_post(id: int):
     return post
 
 
-@app.patch("/posts/{id}")
-def update_posts(id: int, post: Post):
-    index = find_index_post(id)
+@app.post("/posts", status_code=status.HTTP_201_CREATED)
+def create_post(post: Post) -> Post:
+    cursor.execute(
+        """
+        INSERT INTO posts (title, content, published)
+        VALUES (%s, %s, %s)
+        RETURNING *
+        """,
+        (post.title, post.content, post.published)
+    )
+    new_post = cursor.fetchone()
 
-    if index == None:
+    conn.commit()
+
+    return new_post
+
+
+@app.put("/posts/{id}")
+def update_post(id: int, post: Post) -> Post:
+    cursor.execute(
+        """
+        UPDATE posts
+        SET title = %s, content = %s, published = %s
+        WHERE id = %s
+        RETURNING *
+        """,
+        (post.title, post.content, post.published, str(id))
+    )
+    updated_post = cursor.fetchone()
+
+    conn.commit()
+
+    if updated_post == None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Post with ID {id} does not exist."
         )
-    
-    post_dict = post.model_dump()
-    post_dict['id'] = id
-    list_posts[index] = post_dict
 
-    return post_dict
+    return updated_post
 
 
 @app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_posts(id: int):
-    index = find_index_post(id)
+def delete_post(id: int) -> None:
+    cursor.execute(
+        f"""
+        DELETE FROM posts
+        WHERE id={id}
+        RETURNING *
+        """,
+    )
+    deleted_post = cursor.fetchone()
 
-    if index == None:
+    conn.commit()
+
+    if deleted_post == None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Post with ID {id} does not exist."
         )
-
-    list_posts.pop(index)
 
     return

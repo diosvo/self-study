@@ -1,9 +1,15 @@
 {
   "cSpell.words": [
+    "DMBS",
+    "fastapi",
     "HEALTHCHECK",
     "ONBUILD",
+    "pydantic",
+    "psycopg2",
     "realpython",
     "STOPSIGNAL",
-    "WORKDIR"
+    "uvicorn",
+    "virtualenv",
+    "WORKDIR",
   ]
 }

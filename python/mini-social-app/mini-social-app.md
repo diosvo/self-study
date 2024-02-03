@@ -44,9 +44,11 @@ With a single declaration:
 
 ## 👀 Details
 
-### Python Types Intro
+To start a project:
 
-### Concurrency and async / await
+```bash
+uvicorn app.main:app --reload
+```
 
 ### 👾 Tutorial - User Guide
 
@@ -61,7 +63,7 @@ With a single declaration:
 - Many extra features as:
 
   - **WebSockets**
-  - extremely easy tests based on HTTPX and pytest
+  - Extremely easy tests based on HTTPX and pytest
   - **CORS**
   - **Cookie Sessions**
 
@@ -69,7 +71,7 @@ With a single declaration:
 
 ### 🚨 NOTEs:
 
-- API Path order matters!
+API Path order matters!
 
 #### ❓ Why do need Schema
 
@@ -86,6 +88,11 @@ With a single declaration:
   1. [Relational Databases](## "MySQL, PostgreSQL, Oracle, SQL Server.") & [Structured Query Language](## "Language used to communicate with DBMS.") - Read [Postgres](postgres.md) for more details.
 
   2. [NoSQL](## "MongoDB, DynamoDB, Oracle, SQL Server.")
+
+#### ❓ What is Object Relational Mapper (ORM)
+
+- Layer of abstraction that sits between the database and us.
+- We can perform all database operations through traditional Python code. No more SQL!
 
 ## 📚 References
 
