@@ -1,0 +1,19 @@
+# Example
+
+FROM node
+
+COPY package.json package-lock.json /projects/
+
+RUN npm install
+
+COPY . /projects/
+
+RUN npm run build
+
+FROM nginx
+
+COPY --from-builder /projects/build /usr/share/nginx/html
+
+EXPOSE 80
+
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
