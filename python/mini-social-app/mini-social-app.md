@@ -94,6 +94,11 @@ API Path order matters!
 - Layer of abstraction that sits between the database and us.
 - We can perform all database operations through traditional Python code. No more SQL!
 
+DO:
+
+- Instead of manually defining tables in Postgres, we can define our tables as Python models.
+- Queries can be made exclusively through Python code. NoSQL is necessary.
+
 ## 📚 References
 
 - [Learn section](https://fastapi.tiangolo.com/learn/) - @official-page
