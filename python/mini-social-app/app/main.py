@@ -1,13 +1,8 @@
 # Python Libraries
 import logging
-import time
-from typing import Optional
 
 # Third-party Packages
-import psycopg2
 from fastapi import Depends, FastAPI, HTTPException, status
-from psycopg2.extras import RealDictCursor
-from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from . import models, schemas
@@ -20,56 +15,14 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 
-class Post(BaseModel):
-    title: str
-    content: str
-    published: bool = True
-
-
-while True:
-    retries = 0
-    max_retries = 3
-
-    try:
-        conn = psycopg2.connect(
-            host='localhost',
-            database='fastapi',
-            user='diosvo',
-            password='1234',
-            cursor_factory=RealDictCursor
-        )
-        cursor = conn.cursor()
-        logger.info("event=connected-to-postgres-successfully")
-        break
-
-    except Exception as exc:
-        log_event = "event=could-not-connect-to-postgres-server "
-
-        if retries < max_retries:
-            retries += 1
-            wait_time = retries * 2  # Exponential backoff
-            logger.warning(
-                log_event +
-                f"retry_count={retries} "
-                f"message='connection retry in {wait_time}s..' "
-            )
-            time.sleep(wait_time)
-        else:
-            logger.error(
-                log_event +
-                "reason='Failed to connect after several attempts.' "
-                f"details='{str(exc)}'"
-            )
-
-
-@app.get("/posts")
-def get_posts(db: Session = Depends(get_database)) -> list[Post]:
+@app.get(path="/posts", response_model=list[schemas.Response])
+def get_posts(db: Session = Depends(get_database)):
     posts = db.query(models.Post).all()
 
     return posts
 
 
-@app.get("/posts/{id}")
+@app.get(path="/posts/{id}", response_model=schemas.Response)
 def get_post(id: int, db: Session = Depends(get_database)):
     post = db.query(models.Post).filter(models.Post.id == id).first()
 
@@ -82,24 +35,28 @@ def get_post(id: int, db: Session = Depends(get_database)):
     return post
 
 
-@app.post("/posts", status_code=status.HTTP_201_CREATED)
-def create_post(
-    post: Post,
-    db: Session = Depends(get_database)
-) -> Post:
+@app.post(
+    path="/posts",
+    response_model=schemas.Response,
+    status_code=status.HTTP_201_CREATED,
+)
+def create_post(post: schemas.Post, db: Session = Depends(get_database)):
     new_post = models.Post(**post.model_dump())
 
+    # Add the instance object to database session
     db.add(new_post)
+    # The data is saved
     db.commit()
+    # Contain new data from the database, liked the generated ID
     db.refresh(new_post)
 
     return new_post
 
 
-@app.put("/posts/{id}")
+@app.put(path="/posts/{id}", response_model=schemas.Response)
 def update_post(
     id: int,
-    updated_post: Post,
+    updated_post: schemas.Post,
     db: Session = Depends(get_database)
 ):
     query_post = db.query(models.Post).filter(models.Post.id == id)
@@ -116,7 +73,7 @@ def update_post(
     return query_post.first()
 
 
-@app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@app.delete(path="/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int, db: Session = Depends(get_database)) -> None:
     post = db.query(models.Post).filter(models.Post.id == id)
 

@@ -9,11 +9,16 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
+
 def get_database():
+    """
+    Ensure the database session is always closed after the request.
+    Even if there was an exception while processing the request.
+    """
+
     db = SessionLocal()
 
     try:
         yield db
     finally:
         db.close()
-
