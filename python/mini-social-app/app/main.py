@@ -87,3 +87,31 @@ def delete_post(id: int, db: Session = Depends(get_database)) -> None:
     db.commit()
 
     return
+
+
+"""USERS
+
+Authentication & Authorization with JWT
+"""
+
+
+@app.post(
+    path="/users",
+    status_code=status.HTTP_201_CREATED,
+)
+def create_user(user: schemas.User, db: Session = Depends(get_database)):
+    try:
+        new_user = models.User(**user.model_dump())
+        db.add(new_user)
+        db.commit()
+
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(exc).split('\n')[1]
+        )
+
+    else:
+        db.refresh(new_user)
+
+        return new_user
