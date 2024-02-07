@@ -1,5 +1,6 @@
 # Python Libraries
 import logging
+from enum import Enum
 
 # Third-party Packages
 from fastapi import Depends, FastAPI, HTTPException, status
@@ -12,17 +13,59 @@ logger = logging.getLogger('uvicorn')
 
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+"""APP & SWAGGER CONFIGURATION"""
 
 
-@app.get(path="/posts", response_model=list[schemas.Response])
+def enum(**enums) -> type[Enum]:
+    return type('Enum', (), enums)
+
+
+TagName = enum(
+    USERS="users",
+    POSTS="posts"
+)
+
+TAGS_METADATA = [
+    {
+        "name": "posts",
+        "description": "Manage posts."
+    },
+    {
+        "name": "users",
+        "description": "Operations with users. The **login** logic is also here.",
+    },
+]
+
+app = FastAPI(
+    title="Mini Social App",
+    version="1.0.0",
+    contact={
+        "name": "Dios Vo",
+        "email": "vtmn1212@gmail.com"
+    },
+    openapi_tags=TAGS_METADATA
+)
+
+
+"""POSTS"""
+
+
+@app.get(
+    path="/posts",
+    response_model=list[schemas.Response],
+    tags=[TagName.POSTS],
+)
 def get_posts(db: Session = Depends(get_database)):
     posts = db.query(models.Post).all()
 
     return posts
 
 
-@app.get(path="/posts/{id}", response_model=schemas.Response)
+@app.get(
+    path="/posts/{id}",
+    response_model=schemas.Response,
+    tags=[TagName.POSTS],
+)
 def get_post(id: int, db: Session = Depends(get_database)):
     post = db.query(models.Post).filter(models.Post.id == id).first()
 
@@ -39,6 +82,7 @@ def get_post(id: int, db: Session = Depends(get_database)):
     path="/posts",
     response_model=schemas.Response,
     status_code=status.HTTP_201_CREATED,
+    tags=[TagName.POSTS],
 )
 def create_post(post: schemas.Post, db: Session = Depends(get_database)):
     new_post = models.Post(**post.model_dump())
@@ -53,7 +97,11 @@ def create_post(post: schemas.Post, db: Session = Depends(get_database)):
     return new_post
 
 
-@app.put(path="/posts/{id}", response_model=schemas.Response)
+@app.put(
+    path="/posts/{id}",
+    response_model=schemas.Response,
+    tags=[TagName.POSTS],
+)
 def update_post(
     id: int,
     updated_post: schemas.Post,
@@ -73,7 +121,11 @@ def update_post(
     return query_post.first()
 
 
-@app.delete(path="/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@app.delete(
+    path="/posts/{id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    tags=[TagName.POSTS],
+)
 def delete_post(id: int, db: Session = Depends(get_database)) -> None:
     post = db.query(models.Post).filter(models.Post.id == id)
 
@@ -98,6 +150,7 @@ Authentication & Authorization with JWT
 @app.post(
     path="/users",
     status_code=status.HTTP_201_CREATED,
+    tags=[TagName.USERS],
 )
 def create_user(user: schemas.User, db: Session = Depends(get_database)):
     try:
