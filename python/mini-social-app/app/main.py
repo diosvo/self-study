@@ -6,7 +6,7 @@ from enum import Enum
 from fastapi import Depends, FastAPI, HTTPException, status
 from sqlalchemy.orm import Session
 
-from . import models, schemas
+from . import models, schemas, utils
 from .database import engine, get_database
 
 logger = logging.getLogger('uvicorn')
@@ -146,6 +146,20 @@ def delete_post(id: int, db: Session = Depends(get_database)) -> None:
 Authentication & Authorization with JWT
 """
 
+@app.get(
+    path="/users/{id}",
+    tags=[TagName.USERS],
+)
+def get_user(id: int, db: Session = Depends(get_database)):
+    user = db.query(models.User).filter(models.User.id == id).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"User with ID {id} was not found."
+        )
+
+    return user
 
 @app.post(
     path="/users",
@@ -154,7 +168,11 @@ Authentication & Authorization with JWT
 )
 def create_user(user: schemas.User, db: Session = Depends(get_database)):
     try:
+        hashed_password = utils.hash(user.password)
+        user.password = hashed_password
+
         new_user = models.User(**user.model_dump())
+
         db.add(new_user)
         db.commit()
 

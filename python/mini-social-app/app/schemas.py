@@ -15,6 +15,17 @@ class User(BaseModel):
 
 
 class Response(Post):
+    """
+    TODO
+
+    Modify the `Response` class so that it can be a general class used for other classes such as `Post`, `User`, etc. It will include some common parameters:
+
+    * `id`
+    * `created_at`
+
+    But also exclude specific parameters that are sensitive (e.g., `password`), if possible.
+    """
+
     id: int
     created_at: datetime
 
