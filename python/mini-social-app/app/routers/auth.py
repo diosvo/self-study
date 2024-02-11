@@ -1,9 +1,10 @@
 # Third-party Packages
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 # Development Modules
-from .. import database, models, schemas, utils
+from .. import database, models, oauth2, schemas, utils
 
 TAG_NAME = "auth"
 
@@ -14,10 +15,10 @@ router = APIRouter(
 
 @router.post("/token")
 def login_for_access_token(
-    input: schemas.User,
+    input: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(database.get_database)
 ) -> dict[str, str]:
-    query = db.query(models.User).filter(models.User.email == input.email)
+    query = db.query(models.User).filter(models.User.email == input.username)
     user = query.first()
 
     if not user or not utils.verify(input.password, user.password):
@@ -26,8 +27,11 @@ def login_for_access_token(
             detail="Incorrect email or password."
         )
 
-    # Create and return a token
+    access_token = oauth2.create_access_token({
+        "user_id": user.id
+    })
 
     return {
-        "token": "<token>"
+        "access_token": access_token,
+        "token_type": "Bearer"
     }
