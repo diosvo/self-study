@@ -17,14 +17,14 @@ router = APIRouter(
 def login_for_access_token(
     input: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(database.get_database)
-) -> dict[str, str]:
+) -> schemas.Token:
     query = db.query(models.User).filter(models.User.email == input.username)
     user = query.first()
 
     if not user or not utils.verify(input.password, user.password):
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Incorrect email or password."
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Incorrect username or password."
         )
 
     access_token = oauth2.create_access_token({

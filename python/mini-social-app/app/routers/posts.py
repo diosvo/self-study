@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 # Development Modules
-from .. import models, schemas
+from .. import models, oauth2, schemas
 from ..database import get_database
 
 TAG_NAME = "posts"
@@ -15,6 +15,7 @@ logger = logging.getLogger("uvicorn")
 router = APIRouter(
     prefix=f"/{TAG_NAME}",
     tags=[TAG_NAME],
+    dependencies=[Depends(oauth2.get_current_user)]
 )
 
 
