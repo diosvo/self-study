@@ -1,5 +1,6 @@
 # Third-party Packages
-from sqlalchemy import TIMESTAMP, Boolean, Column, Integer, String, text
+from sqlalchemy import (TIMESTAMP, Boolean, Column, ForeignKey, Integer,
+                        String, text)
 
 # Development modules
 from .database import Base
@@ -17,6 +18,12 @@ class Post(Base):
         nullable=False,
         server_default=text('now()')
     )
+    owner_id = Column(
+        Integer,
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False
+    )
+
 
 class User(Base):
     __tablename__ = "users"

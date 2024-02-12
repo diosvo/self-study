@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 
 # Third-party Packages
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
@@ -63,6 +63,7 @@ def verify_access_token(
 
 
 def get_current_user(
+    request: Request,
     token: str = Depends(oauth2_scheme),
     db: Session = Depends(database.get_database),
 ) -> models.User | None:
@@ -77,5 +78,8 @@ def get_current_user(
 
     if user is None:
         raise credentials_exception
+
+    # Store additional information on the request
+    request.state.current_user = user
 
     return user

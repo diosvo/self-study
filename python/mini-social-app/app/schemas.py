@@ -34,7 +34,7 @@ class Response(Post):
     * `id`
     * `created_at`
 
-    But also exclude specific parameters that are sensitive (e.g., `password`), if possible.
+    Not only exclude specific parameters that are sensitive (e.g., `password`), but also add extra fields if possible.
     """
 
     id: int
