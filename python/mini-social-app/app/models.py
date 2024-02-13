@@ -1,6 +1,8 @@
 # Third-party Packages
-from sqlalchemy import (TIMESTAMP, Boolean, Column, ForeignKey, Integer,
-                        String, text)
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql.expression import text
+from sqlalchemy.sql.sqltypes import TIMESTAMP
 
 # Development modules
 from .database import Base
@@ -23,6 +25,7 @@ class Post(Base):
         ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False
     )
+    owner = relationship("User")
 
 
 class User(Base):

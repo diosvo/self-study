@@ -42,3 +42,7 @@ class Response(Post):
 
     class Config:
         from_attributes = True
+
+
+class PostsResponse(Response):
+    owner: User

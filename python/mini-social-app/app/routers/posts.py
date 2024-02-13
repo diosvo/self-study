@@ -21,10 +21,19 @@ router = APIRouter(
 
 @router.get(
     path="/",
-    response_model=list[schemas.Response],
+    response_model=list[schemas.PostsResponse],
 )
-def get_posts(db: Session = Depends(get_database)):
-    posts = db.query(models.Post).all()
+def get_posts(
+    skip: int = 0,
+    limit: int = 10,
+    query: str = "",
+    db: Session = Depends(get_database),
+):
+    posts = db.query(models.Post) \
+        .filter(models.Post.title.contains(query)) \
+        .limit(limit) \
+        .offset(skip) \
+        .all()
 
     return posts
 
