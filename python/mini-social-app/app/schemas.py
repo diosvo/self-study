@@ -3,6 +3,7 @@ from datetime import datetime
 
 # Third-party Packages
 from pydantic import BaseModel, EmailStr
+from pydantic.types import conint
 
 
 class Post(BaseModel):
@@ -14,6 +15,11 @@ class Post(BaseModel):
 class User(BaseModel):
     email: EmailStr
     password: str
+
+
+class Vote(BaseModel):
+    post_id: int
+    dir: conint(le=1)
 
 
 class Token(BaseModel):

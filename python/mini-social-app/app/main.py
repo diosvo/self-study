@@ -1,10 +1,10 @@
 # Third-party Packages
-from fastapi import FastAPI
+from fastapi import APIRouter, FastAPI
 
 # Development Modules
 from . import models
 from .database import engine
-from .routers import auth, posts, users
+from .routers import auth, posts, users, votes
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -23,6 +23,10 @@ TAGS_METADATA = [
         "name": users.TAG_NAME,
         "description": "Operations with users.",
     },
+    {
+        "name": votes.TAG_NAME,
+        "description": "Manage votes.",
+    },
 ]
 
 app = FastAPI(
@@ -35,10 +39,11 @@ app = FastAPI(
     openapi_tags=TAGS_METADATA,
 )
 
-APP_ROUTERS = [
+APP_ROUTERS: list[APIRouter] = [
     auth.router,
     posts.router,
     users.router,
+    votes.router
 ]
 for router in APP_ROUTERS:
     app.include_router(router)
