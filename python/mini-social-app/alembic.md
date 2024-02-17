@@ -18,14 +18,14 @@ Display the current revision for a database:
 alembic current
 ```
 
-Upgrade the specific revision:
-
-```bash
-alembic upgrade {<revision_id>,head}
-```
-
 Show current available heads in the script directory:
 
 ```bash
 alembic heads
+```
+
+Upgrade the specific revision:
+
+```bash
+alembic upgrade {<revision_id>,head}
 ```
