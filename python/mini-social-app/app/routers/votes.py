@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from .. import models, oauth2, schemas
 from ..database import get_database
 
-TAG_NAME = "vote"
+TAG_NAME = "votes"
 logger = logging.getLogger("uvicorn")
 
 router = APIRouter(
