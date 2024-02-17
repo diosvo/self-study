@@ -51,4 +51,5 @@ class Response(Post):
 
 
 class PostsResponse(Response):
-    owner: User
+    votes: int
+    owner_id: int

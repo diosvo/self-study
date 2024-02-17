@@ -3,6 +3,8 @@ import logging
 
 # Third-party Packages
 from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi.encoders import jsonable_encoder
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 # Development Modules
@@ -26,32 +28,46 @@ router = APIRouter(
 def get_posts(
     skip: int = 0,
     limit: int = 10,
-    query: str = "",
+    search: str = "",
     db: Session = Depends(get_database),
 ):
-    posts = db.query(models.Post) \
-        .filter(models.Post.title.contains(query)) \
-        .limit(limit) \
-        .offset(skip) \
+    query = db\
+        .query(models.Post, func.count(models.Vote.post_id).label("votes"))\
+        .outerjoin(models.Vote, models.Vote.post_id == models.Post.id)\
+        .group_by(models.Post.id)\
+        .filter(models.Post.title.contains(search))\
+        .limit(limit)\
+        .offset(skip)\
         .all()
 
-    return posts
+    results = [
+        {**jsonable_encoder(post), "votes": votes} for post, votes in query
+    ]
+
+    return results
 
 
 @router.get(
     path="/{id}",
-    response_model=schemas.Response,
+    response_model=schemas.PostsResponse,
 )
 def get_post(id: int, db: Session = Depends(get_database)):
-    post = db.query(models.Post).filter(models.Post.id == id).first()
+    query = db\
+        .query(models.Post, func.count(models.Vote.post_id).label("votes"))\
+        .outerjoin(models.Vote, models.Vote.post_id == models.Post.id)\
+        .group_by(models.Post.id)\
+        .filter(models.Post.id == id)\
+        .first()
 
-    if not post:
+    if not query:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Post with ID {id} was not found."
         )
 
-    return post
+    post, votes = query
+
+    return {**jsonable_encoder(post), "votes": votes}
 
 
 @router.post(

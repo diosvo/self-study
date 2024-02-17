@@ -1,6 +1,12 @@
+# Third-party Packages
 from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"])
+
+"""Authentication & Authorization
+
+The purpose is to help hash and verify the user password
+"""
 
 
 def hash(password: str) -> str:
