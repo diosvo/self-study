@@ -1,5 +1,6 @@
 # Third-party Packages
 from fastapi import APIRouter, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 # Development Modules
 from . import models
@@ -39,6 +40,7 @@ app = FastAPI(
     openapi_tags=TAGS_METADATA,
 )
 
+
 APP_ROUTERS: list[APIRouter] = [
     auth.router,
     posts.router,
@@ -47,3 +49,17 @@ APP_ROUTERS: list[APIRouter] = [
 ]
 for router in APP_ROUTERS:
     app.include_router(router)
+
+"""Middlewares
+
+Reference: https://fastapi.tiangolo.com/tutorial/middleware/
+"""
+
+ORIGINS: list[str] = []
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
